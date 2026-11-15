@@ -1,0 +1,36 @@
+ADD-16
+======
+
+Adds two unsigned 16-bit values.
+The result is stored in RAM.
+
+Write input and read output in RAM in the Logisim GUI.
+
+MEMORY MAP
+----------
+00-01  Initial jump to program
+02-03  Reserved
+04     Operand A - high byte (INPUT)
+05     Operand A - low byte  (INPUT)
+06     Operand B - high byte (INPUT)
+07     Operand B - low byte  (INPUT)
+08     Result   - high byte  (OUTPUT)
+09     Result   - low byte   (OUTPUT)
+0A-0F  Reserved
+10-FF  Program area
+
+PROGRAM
+-------
+ADDR   INSTRUCTION     COMMENT
+----   -----------     -------
+00     JMP 10          Jump to program entry
+
+10     LOAD [05]       Load A low byte
+12     ADD  [07]       Add B low byte
+14     STORE [09]      Store result low byte
+
+16     LOAD [04]       Load A high byte
+18     ADC  [06]       Add B high byte and carry
+1A     STORE [08]      Store result high byte
+
+1C     HALT            Stop execution
