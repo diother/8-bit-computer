@@ -100,17 +100,17 @@ Its address input is selected as follows:
 
 The output is an 11-bit word, with the following assignments:
 
-| Bit(s) | Signal        | Description                                                   |
-| ------ | ------------- | ------------------------------------------------------------- |
-| 10     | `MEM_WR`      | Enables writing to RAM.                                       |
-| 9      | `ACC_LOAD`    | Enables loading a value into the accumulator.                 |
-| 8      | `ACC_SEL`     | Selects accumulator input: `0` = ALU, `1` = RAM.              |
-| 7      | `ALU_CIN_SEL` | Selects ALU carry-in: `0` = constant zero, `1` = carry latch. |
-| 6      | `ALU_INVERT`  | Selects the two's complement of the RAM operand for the ALU.  |
-| 5      | `COUT_WR`     | Enables writing to the carry latch.                           |
-| 4      | `ZERO_WR`     | Enables writing to the zero latch.                            |
-| 3–1    | `JMP_SEL`     | Selects the jump condition.                                   |
-| 0      | `HALT_SET`    | Blocks clock propagation to the CPU.                          |
+| Bit(s) | Signal     | Description                                           |
+| ------ | ---------- | ----------------------------------------------------- |
+| 10     | `MEM_WR`   | Enables writing to RAM.                               |
+| 9      | `ACC_LOAD` | Enables loading a value into the accumulator.         |
+| 8      | `ACC_SEL`  | Selects accumulator input: `0` = ALU, `1` = RAM.      |
+| 7      | `CIN_SEL`  | Selects ALU carry-in: `0` = `SUB`, `1` = carry latch. |
+| 6      | `SUB`      | Selects the one's complement of the RAM operand.      |
+| 5      | `COUT_WR`  | Enables writing to the carry latch.                   |
+| 4      | `ZERO_WR`  | Enables writing to the zero latch.                    |
+| 3–1    | `JMP_SEL`  | Selects the jump condition.                           |
+| 0      | `HALT_SET` | Blocks clock propagation to the CPU.                  |
 
 ### Jump selection
 
@@ -133,20 +133,20 @@ The jump selector combines instruction decoding with the CPU's internal status f
 
 Each instruction selects a particular combination of control signals.
 
-| Opcode | Instruction | Active control signals                                        |
-| ------ | ----------- | ------------------------------------------------------------- |
-| `01`   | LOAD        | `ACC_LOAD`, `ACC_SEL`                                         |
-| `02`   | STORE       | `MEM_WR`                                                      |
-| `03`   | ADD         | `ACC_LOAD`, `COUT_WR`, `ZERO_WR`                              |
-| `04`   | ADC         | `ACC_LOAD`, `ALU_CIN_SEL`, `COUT_WR`, `ZERO_WR`               |
-| `05`   | SUB         | `ACC_LOAD`, `ALU_INVERT`, `COUT_WR`, `ZERO_WR`                |
-| `06`   | SBC         | `ACC_LOAD`, `ALU_CIN_SEL`, `ALU_INVERT`, `COUT_WR`, `ZERO_WR` |
-| `07`   | JMP         | `JMP_SEL = 001`                                               |
-| `08`   | JZ          | `JMP_SEL = 010`                                               |
-| `09`   | JNZ         | `JMP_SEL = 011`                                               |
-| `0A`   | JC          | `JMP_SEL = 100`                                               |
-| `0B`   | JNC         | `JMP_SEL = 101`                                               |
-| `0F`   | HALT        | `HALT_SET`                                                    |
+| Opcode | Instruction | Active control signals                             |
+| ------ | ----------- | -------------------------------------------------- |
+| `01`   | LOAD        | `ACC_LOAD`, `ACC_SEL`                              |
+| `02`   | STORE       | `MEM_WR`                                           |
+| `03`   | ADD         | `ACC_LOAD`, `COUT_WR`, `ZERO_WR`                   |
+| `04`   | ADC         | `ACC_LOAD`, `CIN_SEL`, `COUT_WR`, `ZERO_WR`        |
+| `05`   | SUB         | `ACC_LOAD`, `SUB`, `COUT_WR`, `ZERO_WR`            |
+| `06`   | SBC         | `ACC_LOAD`, `CIN_SEL`, `SUB`, `COUT_WR`, `ZERO_WR` |
+| `07`   | JMP         | `JMP_SEL = 001`                                    |
+| `08`   | JZ          | `JMP_SEL = 010`                                    |
+| `09`   | JNZ         | `JMP_SEL = 011`                                    |
+| `0A`   | JC          | `JMP_SEL = 100`                                    |
+| `0B`   | JNC         | `JMP_SEL = 101`                                    |
+| `0F`   | HALT        | `HALT_SET`                                         |
 
 ### Control ROM contents
 
